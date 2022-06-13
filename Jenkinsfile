@@ -25,7 +25,7 @@ spec:
         memory: "256Mi"
         cpu: "100m"
   - name: deploy
-    image: ariretiarno/bp-cilsy-14:deploy
+    image: richardsmnjtk/mern-todo:deploy
     imagePullPolicy: "IfNotPresent"
     command:
     - cat
@@ -68,8 +68,8 @@ spec:
                 script {
                     if (env.BRANCH_NAME == 'staging'){
                         sh """
-                        /kaniko/executor --context frontend/ --destination ariretiarno/bp-cilsy-14:frontend-${BUILD_NUMBER}
-                        /kaniko/executor --context backend/ --destination ariretiarno/bp-cilsy-14:backend-${BUILD_NUMBER}
+                        /kaniko/executor --context frontend/ --destination richardsmnjtk/mern-todo:frontend-${BUILD_NUMBER}
+                        /kaniko/executor --context backend/ --destination richardsmnjtk/mern-todo:backend-${BUILD_NUMBER}
                         """
                     }
                 }
@@ -80,7 +80,7 @@ spec:
             container('deploy') {
                 script {
                     sh """
-                    export KOPS_STATE_STORE=s3://kube.retiarno.my.id && export KOPS_CLUSTER_NAME=kube.retiarno.my.id
+                    export KOPS_STATE_STORE=s3://richard-bpx && export KOPS_CLUSTER_NAME=big.k8s.local
                     kops export kubecfg --admin
                     sed -i -e 's/BUILDID/${BUILD_NUMBER}/g' frontend/frontend.yaml
                     sed -i -e 's/BUILDID/${BUILD_NUMBER}/g' backend/backend.yaml
