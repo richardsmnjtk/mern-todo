@@ -3,6 +3,9 @@ kind: Ingress
 metadata:
   name: frontend-ingress
   namespace: production
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-production
 spec:
   ingressClassName: nginx
   rules:
@@ -16,6 +19,9 @@ spec:
             name: frontend
             port:
               number: 80
+  tls:
+    - hosts:
+      - frontend.richard-dev.my.id
 --- 
 apiVersion: v1
 kind: Service
